@@ -2,10 +2,10 @@ import { CanvasArea } from './components/CanvasArea';
 import { Layer } from './components/Layers';
 import { ToolSelector } from './components/ToolSelector';
 import { observer } from 'mobx-react-lite';
-import { rootStore } from './store';
+import { canvasStore } from './store';
 
 export const Page = observer(() => {
-  const selectedTool = rootStore.canvasStore.selectedTool;
+  const selectedTool = canvasStore.selectedTool;
 
   return (
     <div className="h-screen max-h-screen">
@@ -21,7 +21,7 @@ export const Page = observer(() => {
             {<selectedTool.DetailUI />}
           </div>
         )}
-        <div className="z-10 absolute top-2 right-2">
+        <div className="z-10 absolute top-2 right-2 border-2 border-black p-2">
           <Layer />
         </div>
       </div>

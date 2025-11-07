@@ -1,32 +1,44 @@
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef } from 'react';
 import { TOOLBAR_HEIGHT } from '../const';
-import { rootStore } from '../store';
+import { canvasStore } from '../store';
 
 export const CanvasArea = observer(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const onResize = () =>
-      rootStore.canvasStore.setCanvasSize(
+      canvasStore.setCanvasSize(
         window.innerWidth,
         window.innerHeight - TOOLBAR_HEIGHT,
       );
-    rootStore.canvasStore.canvas = canvasRef.current;
+    canvasStore.canvas = canvasRef.current;
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === 'u') {
+        canvasStore.undo();
+      } else if (e.key.toLowerCase() === 'y') {
+        canvasStore.redo();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
   }, []);
 
   return (
     <canvas
       key="canvas"
       ref={canvasRef}
-      id="overlay"
       width={window.innerWidth}
       height={window.innerHeight - TOOLBAR_HEIGHT}
       onClick={(e) => {
         e.preventDefault();
-        if (!rootStore.canvasStore.selectedTool) return;
+        if (!canvasStore.selectedTool) return;
 
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -36,7 +48,7 @@ export const CanvasArea = observer(() => {
 
         const rect = canvas.getBoundingClientRect();
 
-        rootStore.canvasStore.addLayers({
+        canvasStore.addLayers({
           ctx,
           mousePosition: {
             x: e.clientX - rect.x,

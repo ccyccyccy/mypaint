@@ -1,4 +1,4 @@
-export const SquareOutline = (props) => (
+export const SquareOutlineIcon = (props) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"

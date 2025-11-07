@@ -3,31 +3,24 @@ import type { OperationData } from '../components/tools/type';
 import { TOOLBAR_HEIGHT } from '../const';
 import { toolFromId, type Tool } from '../components/tools';
 
-export class RootStore {
-  canvasStore: CanvasStore;
-
-  constructor() {
-    this.canvasStore = new CanvasStore(this);
-  }
-}
+type LayerData = {
+  layerName: string;
+  toolId: string;
+  data: OperationData;
+};
 
 export class CanvasStore {
-  rootStore: RootStore;
-  layers: {
-    layerName: string;
-    toolId: string;
-    data: OperationData;
-  }[] = [];
+  layers: LayerData[] = [];
   selectedTool?: Tool = undefined;
   canvasSize = {
     width: window.innerWidth,
     height: window.innerHeight - TOOLBAR_HEIGHT,
   };
   canvas: HTMLCanvasElement | null = null;
+  redoStack: LayerData[] = [];
 
-  constructor(rootStore: RootStore) {
+  constructor() {
     makeAutoObservable(this);
-    this.rootStore = rootStore;
 
     autorun(() => {
       this.drawCanvas();
@@ -53,8 +46,9 @@ export class CanvasStore {
     this.layers.push({
       toolId: this.selectedTool.id,
       data: { ...data, ...toolData },
-      layerName: 'placeholder layername',
+      layerName: `Layer ${this.layers.length}`,
     });
+    this.redoStack = [];
   }
 
   selectTool(tool: Tool) {
@@ -67,10 +61,27 @@ export class CanvasStore {
   }
 
   drawCanvas() {
+    this.canvas
+      ?.getContext('2d')
+      ?.clearRect(0, 0, this.canvasSize.width, this.canvasSize.height);
     this.layers.forEach((layer) =>
       toolFromId[layer.toolId].operation(layer.data),
     );
   }
+
+  undo() {
+    const undoneLayer = this.layers.pop();
+    if (undoneLayer) {
+      this.redoStack.push(undoneLayer);
+    }
+  }
+
+  redo() {
+    const redoLayer = this.redoStack.pop();
+    if (redoLayer) {
+      this.layers.push(redoLayer);
+    }
+  }
 }
 
-export const rootStore = new RootStore();
+export const canvasStore = new CanvasStore();

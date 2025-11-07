@@ -1,7 +1,5 @@
 import { observer } from 'mobx-react-lite';
 import { Shape, shapeToolStore } from './store';
-import { CircleOutline } from '../../../assets/icons/CircleOutline';
-import { SquareOutline } from '../../../assets/icons/SquareOutline';
 
 export const DetailUI = observer(() => {
   return (
@@ -38,6 +36,7 @@ export const DetailUI = observer(() => {
             {Object.entries(Shape).map(([name, { Icon }]) => {
               return (
                 <div
+                  key={name}
                   className={`h-6 w-6${shapeToolStore.data.shape === name ? ' border-2 border-black' : ''}`}
                   onClick={() => {
                     shapeToolStore.data.shape = name as keyof typeof Shape;

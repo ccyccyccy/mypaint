@@ -1,6 +1,6 @@
 import { toolList } from './tools';
 import { TOOLBAR_HEIGHT } from '../const';
-import { rootStore } from '../store';
+import { canvasStore } from '../store';
 
 export const ToolSelector = () => {
   return (
@@ -9,7 +9,7 @@ export const ToolSelector = () => {
         <div
           key={tool.id}
           onClick={() => {
-            rootStore.canvasStore.selectTool(tool);
+            canvasStore.selectTool(tool);
           }}
         >
           <tool.icon width="40px" height={`${TOOLBAR_HEIGHT}px`} />

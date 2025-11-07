@@ -1,4 +1,4 @@
-export const CircleOutline = (props) => (
+export const CircleOutlineIcon = (props) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
