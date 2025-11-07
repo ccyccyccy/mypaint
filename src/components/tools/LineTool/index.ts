@@ -1,4 +1,5 @@
 import { LineToolIcon } from '../../../assets/icons/LineToolIcon';
+import { canvasStore } from '../../../store';
 import type { GenericTool } from '../type';
 import { DetailUI } from './DetailUI';
 import { lineToolStore, type LineToolData } from './store';
@@ -8,17 +9,26 @@ export const LineTool: GenericTool<LineToolData, typeof lineToolStore> = {
   icon: LineToolIcon,
   store: lineToolStore,
   DetailUI: DetailUI,
-  operation: ({ ctx, mousePosition: { x, y }, color, length, line }) => {
+  onClick: ({ mousePosition: { x, y } }) => {
     const startPosition = lineToolStore.data.startPosition;
     if (!startPosition) {
       lineToolStore.data.startPosition = { x, y };
     } else {
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.moveTo(startPosition.x, startPosition.y);
-      ctx.lineTo(x, y);
-      ctx.stroke();
+      canvasStore.addLayers({
+        startPosition,
+        endPosition: { x, y },
+        color: lineToolStore.data.color,
+      });
       lineToolStore.data.startPosition = undefined;
     }
+  },
+  operation: ({ ctx, startPosition, endPosition, color }) => {
+    if (!startPosition || !endPosition) return;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(startPosition.x, startPosition.y);
+    ctx.lineTo(endPosition.x, endPosition.y);
+    ctx.stroke();
+    lineToolStore.data.startPosition = undefined;
   },
 };

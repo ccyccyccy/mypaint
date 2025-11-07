@@ -5,7 +5,7 @@ import { CircleOutlineIcon } from '../../../assets/icons/CircleOutlineIcon';
 class LineToolStore {
   data: LineToolData = {
     startPosition: undefined,
-    length: 20,
+    endPosition: undefined,
     color: '#000000',
   };
 
@@ -16,7 +16,7 @@ class LineToolStore {
 
 export type LineToolData = {
   startPosition?: { x: number; y: number };
-  length: number;
+  endPosition?: { x: number; y: number };
   color: string;
 };
 
