@@ -22,8 +22,8 @@ export const CanvasArea = observer(() => {
       key="canvas"
       ref={canvasRef}
       id="overlay"
-      width={rootStore.canvasStore.canvasSize.width}
-      height={rootStore.canvasStore.canvasSize.height}
+      width={window.innerWidth}
+      height={window.innerHeight - TOOLBAR_HEIGHT}
       onClick={(e) => {
         e.preventDefault();
         if (!rootStore.canvasStore.selectedTool) return;

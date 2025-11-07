@@ -1,7 +1,7 @@
-import { autorun, makeAutoObservable } from 'mobx';
+import { autorun, makeAutoObservable, reaction } from 'mobx';
 import type { OperationData } from '../components/tools/type';
 import { TOOLBAR_HEIGHT } from '../const';
-import { toolFromId, toolList, type Tool } from '../components/tools';
+import { toolFromId, type Tool } from '../components/tools';
 
 export class RootStore {
   canvasStore: CanvasStore;
@@ -30,17 +30,26 @@ export class CanvasStore {
     this.rootStore = rootStore;
 
     autorun(() => {
-      this.layers.forEach((layer) =>
-        toolFromId[layer.toolId].operation(layer.data),
-      );
+      this.drawCanvas();
     });
+
+    reaction(
+      () => [this.canvasSize.height, this.canvasSize.width],
+      () => {
+        if (!this.canvas) return;
+        this.canvas.height = this.canvasSize.height;
+        this.canvas.width = this.canvasSize.width;
+        setTimeout(() => {
+          this.drawCanvas();
+        });
+      },
+    );
   }
 
   addLayers(data: OperationData) {
     if (!this.selectedTool) return;
 
     const toolData = this.selectedTool.store.data;
-    console.log('{ ...data, ...toolData } :>> ', { ...data, ...toolData });
     this.layers.push({
       toolId: this.selectedTool.id,
       data: { ...data, ...toolData },
@@ -55,6 +64,12 @@ export class CanvasStore {
   setCanvasSize(width: number, height: number) {
     this.canvasSize.width = width;
     this.canvasSize.height = height;
+  }
+
+  drawCanvas() {
+    this.layers.forEach((layer) =>
+      toolFromId[layer.toolId].operation(layer.data),
+    );
   }
 }
 
