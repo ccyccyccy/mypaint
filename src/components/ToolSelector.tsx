@@ -1,18 +1,20 @@
 import { toolList } from './tools';
-import { TOOLBAR_HEIGHT } from '../const';
 import { canvasStore } from '../store';
 
 export const ToolSelector = () => {
   return (
-    <div className="flex flex-row gap-2 bg-white border-b-2">
+    <div className="flex flex-row gap-2">
       {toolList.map((tool) => (
         <div
           key={tool.id}
+          className={
+            canvasStore.selectedTool?.id === tool.id ? 'bg-slate-400' : ''
+          }
           onClick={() => {
             canvasStore.selectTool(tool);
           }}
         >
-          <tool.icon width="40px" height={`${TOOLBAR_HEIGHT}px`} />
+          <tool.icon width="40px" height="40px" />
         </div>
       ))}
     </div>

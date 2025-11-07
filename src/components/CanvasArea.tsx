@@ -48,7 +48,7 @@ export const CanvasArea = observer(() => {
 
         const rect = canvas.getBoundingClientRect();
 
-        canvasStore.addLayers({
+        canvasStore.selectedTool.onClick({
           ctx,
           mousePosition: {
             x: e.clientX - rect.x,

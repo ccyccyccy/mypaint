@@ -1,4 +1,5 @@
 import { ShapeToolIcon } from '../../../assets/icons/ShapeToolIcon';
+import { canvasStore } from '../../../store';
 import type { GenericTool } from '../type';
 import { DetailUI } from './DetailUI';
 import { shapeToolStore, type ShapeToolData } from './store';
@@ -8,7 +9,10 @@ export const ShapeTool: GenericTool<ShapeToolData, typeof shapeToolStore> = {
   icon: ShapeToolIcon,
   store: shapeToolStore,
   DetailUI: DetailUI,
-  operation: ({ ctx, mousePosition: { x, y }, color, length, shape }) => {
+  onClick: ({ mousePosition: { x, y } }) => {
+    canvasStore.addLayers({ ...shapeToolStore.data, position: { x, y } });
+  },
+  operation: ({ ctx, position: { x, y }, color, length, shape }) => {
     ctx.fillStyle = color;
     switch (shape) {
       case 'square':

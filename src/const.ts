@@ -1,4 +1,4 @@
-export const TOOLBAR_HEIGHT = 40;
+export const TOOLBAR_HEIGHT = 50;
 export const SUPPORTED_COLORS = [
   '#000000',
   '#ff0000',

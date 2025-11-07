@@ -9,7 +9,10 @@ export const FillTool: GenericTool<FillToolData, typeof fillToolStore> = {
   icon: FillToolIcon,
   store: fillToolStore,
   DetailUI: DetailUI,
-  operation: ({ ctx, mousePosition: { x, y }, color }) => {
+  onClick: () => {
+    canvasStore.addLayers({ color: fillToolStore.data.color });
+  },
+  operation: ({ ctx, color }) => {
     ctx.fillStyle = color;
     ctx.fillRect(
       0,

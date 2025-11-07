@@ -5,10 +5,11 @@ export type GenericTool<DataT, StoreT> = {
   icon: ElementType;
   store: StoreT;
   DetailUI: ElementType;
-  operation: (data: OperationData & DataT) => void;
+  onClick: (clickData: ClickData) => void;
+  operation: (data: { ctx: CanvasRenderingContext2D } & DataT) => void;
 };
 
-export type OperationData = {
+export type ClickData = {
   ctx: CanvasRenderingContext2D;
   mousePosition: {
     x: number;

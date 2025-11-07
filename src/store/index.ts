@@ -1,12 +1,11 @@
 import { autorun, makeAutoObservable, reaction } from 'mobx';
-import type { OperationData } from '../components/tools/type';
 import { TOOLBAR_HEIGHT } from '../const';
 import { toolFromId, type Tool } from '../components/tools';
 
 type LayerData = {
   layerName: string;
   toolId: string;
-  data: OperationData;
+  data: Tool['store']['data'];
 };
 
 export class CanvasStore {
@@ -39,13 +38,12 @@ export class CanvasStore {
     );
   }
 
-  addLayers(data: OperationData) {
+  addLayers(data: Tool['store']['data']) {
     if (!this.selectedTool) return;
 
-    const toolData = this.selectedTool.store.data;
     this.layers.push({
       toolId: this.selectedTool.id,
-      data: { ...data, ...toolData },
+      data,
       layerName: `Layer ${this.layers.length}`,
     });
     this.redoStack = [];
@@ -61,14 +59,15 @@ export class CanvasStore {
   }
 
   drawCanvas() {
-    this.canvas
-      ?.getContext('2d')
-      ?.clearRect(0, 0, this.canvasSize.width, this.canvasSize.height);
+    const ctx = this.canvas?.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, this.canvasSize.width, this.canvasSize.height);
     this.layers.forEach((layer) =>
-      toolFromId[layer.toolId].operation(layer.data),
+      toolFromId[layer.toolId].operation({ ctx, ...layer.data }),
     );
   }
 
+  // UNDO REDO ONLY WORKS IF LAYER ORDER IS NOT CHANGED, IS ADDED IN ORDER, AND LAYERS ARE NOT DELETED
   undo() {
     const undoneLayer = this.layers.pop();
     if (undoneLayer) {

@@ -2,10 +2,9 @@ import { makeAutoObservable } from 'mobx';
 import { SquareOutlineIcon } from '../../../assets/icons/SquareOutlineIcon';
 import { CircleOutlineIcon } from '../../../assets/icons/CircleOutlineIcon';
 
-class ShapeToolStore {
-  data: ShapeToolData = {
-    position: { x: 0, y: 0 },
-    shape: 'square',
+class LineToolStore {
+  data: LineToolData = {
+    startPosition: undefined,
     length: 20,
     color: '#000000',
   };
@@ -15,14 +14,13 @@ class ShapeToolStore {
   }
 }
 
-export type ShapeToolData = {
-  shape: keyof typeof Shape;
+export type LineToolData = {
+  startPosition?: { x: number; y: number };
   length: number;
   color: string;
-  position: { x: number; y: number };
 };
 
-export const Shape = {
+export const Line = {
   square: {
     Icon: SquareOutlineIcon,
   },
@@ -31,4 +29,4 @@ export const Shape = {
   },
 } as const;
 
-export const shapeToolStore = new ShapeToolStore();
+export const lineToolStore = new LineToolStore();
