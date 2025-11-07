@@ -8,8 +8,16 @@ export const ShapeTool: GenericTool<ShapeToolData, typeof shapeToolStore> = {
   icon: ShapeToolIcon,
   store: shapeToolStore,
   DetailUI: DetailUI,
-  operation: ({ ctx, mousePosition: { x, y }, color, length }) => {
+  operation: ({ ctx, mousePosition: { x, y }, color, length, shape }) => {
     ctx.fillStyle = color;
-    ctx.fillRect(x, y, length, length);
+    switch (shape) {
+      case 'square':
+        ctx.fillRect(x, y, length, length);
+        break;
+      case 'circle':
+        ctx.beginPath();
+        ctx.arc(x, y, length / 2, 0, Math.PI * 2);
+        ctx.fill();
+    }
   },
 };
