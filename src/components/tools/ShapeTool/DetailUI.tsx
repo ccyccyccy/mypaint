@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { Shape, shapeToolStore } from './store';
+import { SUPPORTED_COLORS } from '../../../const';
 
 export const DetailUI = observer(() => {
   return (
@@ -9,16 +10,7 @@ export const DetailUI = observer(() => {
         <div>
           <div>Color</div>
           <div className="grid grid-cols-4 gap-1">
-            {[
-              '#000000',
-              '#ff0000',
-              '#00ff00',
-              '#0000ff',
-              '#ffff00',
-              '#ff00ff',
-              '#00ffff',
-              '#ffffff',
-            ].map((color) => (
+            {SUPPORTED_COLORS.map((color) => (
               <div
                 key={color}
                 className={`h-6 w-6${shapeToolStore.data.color === color ? ' border-2 border-black' : ''}`}

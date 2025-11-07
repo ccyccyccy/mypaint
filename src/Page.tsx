@@ -17,11 +17,11 @@ export const Page = observer(() => {
           <CanvasArea />
         </div>
         {selectedTool && (
-          <div className="z-10 absolute top-2 left-2 border-2 border-black p-2">
+          <div className="z-10 absolute top-2 left-2 border-2 border-black p-2 bg-slate-200">
             {<selectedTool.DetailUI />}
           </div>
         )}
-        <div className="z-10 absolute top-2 right-2 border-2 border-black p-2">
+        <div className="z-10 absolute top-2 right-2 border-2 border-black p-2 bg-slate-200">
           <Layer />
         </div>
       </div>
