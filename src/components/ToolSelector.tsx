@@ -1,15 +1,20 @@
-import { FillToolIcon } from '../assets/icons/FillToolIcon';
-import { ShapeToolIcon } from '../assets/icons/ShapeToolIcon';
+import { toolList } from './tools';
+import { TOOLBAR_HEIGHT } from '../const';
+import { rootStore } from '../store';
 
 export const ToolSelector = () => {
   return (
-    <div className="flex flex-row gap-2">
-      <div>
-        <ShapeToolIcon width="40px" height="40px" />
-      </div>
-      <div>
-        <FillToolIcon width="40px" height="40px" />
-      </div>
+    <div className="flex flex-row gap-2 bg-white border-b-2">
+      {toolList.map((tool) => (
+        <div
+          key={tool.id}
+          onClick={() => {
+            rootStore.canvasStore.selectTool(tool);
+          }}
+        >
+          <tool.icon width="40px" height={`${TOOLBAR_HEIGHT}px`} />
+        </div>
+      ))}
     </div>
   );
 };
