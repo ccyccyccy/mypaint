@@ -18,16 +18,20 @@ export const LineTool: GenericTool<LineToolData, typeof lineToolStore> = {
         startPosition,
         endPosition: { x, y },
         color: lineToolStore.data.color,
+        strokeWidth: lineToolStore.data.strokeWidth,
       });
       lineToolStore.data.startPosition = undefined;
     }
   },
-  operation: ({ ctx, startPosition, endPosition, color }) => {
+  operation: ({ ctx, startPosition, endPosition, color, strokeWidth }) => {
     if (!startPosition || !endPosition) return;
     ctx.strokeStyle = color;
     ctx.beginPath();
     ctx.moveTo(startPosition.x, startPosition.y);
     ctx.lineTo(endPosition.x, endPosition.y);
+    console.log('strokeWidth :>> ', strokeWidth);
+    ctx.lineWidth = strokeWidth;
+    console.log('ctx.lineWidth :>> ', ctx.lineWidth);
     ctx.stroke();
     lineToolStore.data.startPosition = undefined;
   },

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { Line, lineToolStore } from './store';
+import { lineToolStore, strokeWidths } from './store';
 import { SUPPORTED_COLORS } from '../../../const';
 
 export const DetailUI = observer(() => {
@@ -25,16 +25,19 @@ export const DetailUI = observer(() => {
         <div>
           <div>Stroke</div>
           <div className="grid grid-cols-4">
-            {Object.entries(Line).map(([name, { Icon }]) => {
+            {strokeWidths.map((strokeWidth) => {
               return (
                 <div
-                  key={name}
-                  className={`h-6 w-6${lineToolStore.data.line === name ? ' border-2 border-black' : ''}`}
+                  key={strokeWidth}
+                  className={`h-6 w-6 flex justify-center items-center${lineToolStore.data.strokeWidth === strokeWidth ? ' border-2 border-black' : ''}`}
                   onClick={() => {
-                    lineToolStore.data.line = name as keyof typeof Line;
+                    lineToolStore.data.strokeWidth = strokeWidth;
                   }}
                 >
-                  <Icon />
+                  <div
+                    className="bg-black rounded-full"
+                    style={{ width: strokeWidth, height: strokeWidth }}
+                  ></div>
                 </div>
               );
             })}

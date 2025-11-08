@@ -7,6 +7,7 @@ class LineToolStore {
     startPosition: undefined,
     endPosition: undefined,
     color: '#000000',
+    strokeWidth: 1,
   };
 
   constructor() {
@@ -18,6 +19,7 @@ export type LineToolData = {
   startPosition?: { x: number; y: number };
   endPosition?: { x: number; y: number };
   color: string;
+  strokeWidth: (typeof strokeWidths)[number];
 };
 
 export const Line = {
@@ -30,3 +32,4 @@ export const Line = {
 } as const;
 
 export const lineToolStore = new LineToolStore();
+export const strokeWidths = [1, 2, 4, 6, 8, 10, 12, 14] as const;
