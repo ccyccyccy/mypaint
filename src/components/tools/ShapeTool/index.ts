@@ -16,12 +16,25 @@ export const ShapeTool: GenericTool<ShapeToolData, typeof shapeToolStore> = {
     ctx.fillStyle = color;
     switch (shape) {
       case 'square':
-        ctx.fillRect(x, y, length, length);
+        ctx.fillRect(x - length / 2, y - length / 2, length, length);
         break;
       case 'circle':
         ctx.beginPath();
         ctx.arc(x, y, length / 2, 0, Math.PI * 2);
         ctx.fill();
+        break;
+      case 'hexagon':
+        ctx.beginPath();
+        ctx.moveTo(x - length / 4, y - length / 2);
+        ctx.lineTo(x + length / 4, y - length / 2);
+        ctx.lineTo(x + length / 2, y);
+        ctx.lineTo(x + length / 4, y + length / 2);
+        ctx.lineTo(x - length / 4, y + length / 2);
+        ctx.lineTo(x - length / 2, y);
+        ctx.fill();
+        break;
+      default:
+        return;
     }
   },
 };

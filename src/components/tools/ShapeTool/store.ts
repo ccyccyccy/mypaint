@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { SquareOutlineIcon } from '../../../assets/icons/SquareOutlineIcon';
 import { CircleOutlineIcon } from '../../../assets/icons/CircleOutlineIcon';
+import { HexagonOutlineIcon } from '../../../assets/icons/HexagonOutlineIcon';
 
 class ShapeToolStore {
   data: ShapeToolData = {
@@ -28,6 +29,9 @@ export const Shape = {
   },
   circle: {
     Icon: CircleOutlineIcon,
+  },
+  hexagon: {
+    Icon: HexagonOutlineIcon,
   },
 } as const;
 
