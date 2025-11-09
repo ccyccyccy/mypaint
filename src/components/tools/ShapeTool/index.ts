@@ -9,6 +9,12 @@ export const ShapeTool: GenericTool<ShapeToolData, typeof shapeToolStore> = {
   icon: ShapeToolIcon,
   store: shapeToolStore,
   DetailUI: DetailUI,
+  onToolSelected: ({ canvas }) => {
+    canvas.addEventListener('mousemove', drawPreviewShape);
+  },
+  onSwitchToOtherTool: ({ canvas }) => {
+    canvas.removeEventListener('mousemove', drawPreviewShape);
+  },
   onClick: ({ mousePosition: { x, y } }) => {
     canvasStore.addLayer({ ...shapeToolStore.data, position: { x, y } });
   },
@@ -37,4 +43,23 @@ export const ShapeTool: GenericTool<ShapeToolData, typeof shapeToolStore> = {
         return;
     }
   },
+};
+
+const drawPreviewShape = (event: MouseEvent) => {
+  const draw = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    ctx.strokeStyle = shapeToolStore.data.color;
+    ctx.globalAlpha = 0.2;
+    ShapeTool.operation({
+      ctx,
+      position: { x, y },
+      color: shapeToolStore.data.color,
+      size: shapeToolStore.data.size,
+      shape: shapeToolStore.data.shape,
+    });
+  };
+  canvasStore.drawPreviewCanvas(draw);
 };

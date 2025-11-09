@@ -5,7 +5,7 @@ import { fillToolStore } from './store';
 export const DetailUI = observer(() => {
   return (
     <div>
-      <div>Fill Tool</div>
+      <div className="font-bold">Fill Tool</div>
       <div className="flex flex-row gap-2">
         <div>
           <div>Color</div>

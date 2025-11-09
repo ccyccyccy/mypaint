@@ -5,7 +5,7 @@ import { SUPPORTED_COLORS } from '../../../const';
 export const DetailUI = observer(() => {
   return (
     <div>
-      <div>Line Tool</div>
+      <div className="font-bold">Line Tool</div>
       <div className="flex flex-row gap-2">
         <div>
           <div>Color</div>

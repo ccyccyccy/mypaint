@@ -60,6 +60,7 @@ export const CanvasArea = observer(() => {
           const rect = canvas.getBoundingClientRect();
 
           canvasStore.selectedTool.onClick({
+            canvas,
             ctx,
             mousePosition: {
               x: e.clientX - rect.x,

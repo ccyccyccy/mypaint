@@ -40,8 +40,16 @@ export class CanvasStore {
 
     reaction(
       () => this.selectedTool,
-      (_, prev) => {
-        prev?.onSwitchToOtherTool?.();
+      (cur, prev) => {
+        if (!this.canvas || !this.previewCanvas) return;
+        prev?.onSwitchToOtherTool?.({
+          canvas: this.canvas,
+          previewCanvas: this.previewCanvas,
+        });
+        cur?.onToolSelected?.({
+          previewCanvas: this.previewCanvas,
+          canvas: this.canvas,
+        });
         this.previewCanvas
           ?.getContext('2d')
           ?.clearRect(0, 0, this.canvasSize.width, this.canvasSize.height);

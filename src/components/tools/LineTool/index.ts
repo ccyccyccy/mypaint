@@ -10,21 +10,17 @@ export const LineTool: GenericTool<LineToolData, typeof lineToolStore> = {
   store: lineToolStore,
   DetailUI: DetailUI,
 
-  onSwitchToOtherTool() {
+  onSwitchToOtherTool({ canvas }) {
     lineToolStore.data.startPosition = undefined;
-    canvasStore.canvas?.removeEventListener('mousemove', drawPreviewLine);
+    canvas.removeEventListener('mousemove', drawPreviewLine);
   },
 
-  onClick: ({ mousePosition: { x, y } }) => {
+  onClick: ({ mousePosition: { x, y }, canvas }) => {
     const startPosition = lineToolStore.data.startPosition;
     if (!startPosition) {
       lineToolStore.data.startPosition = { x, y };
-      const canvas = canvasStore.canvas;
-      if (!canvas) return;
       canvas.addEventListener('mousemove', drawPreviewLine);
     } else {
-      const canvas = canvasStore.canvas;
-      if (!canvas) return;
       canvas.removeEventListener('mousemove', drawPreviewLine);
       canvasStore.addLayer({
         startPosition,
