@@ -10,6 +10,11 @@ export const LineTool: GenericTool<LineToolData, typeof lineToolStore> = {
   store: lineToolStore,
   DetailUI: DetailUI,
 
+  onSwitchToOtherTool() {
+    lineToolStore.data.startPosition = undefined;
+    canvasStore.canvas?.removeEventListener('mousemove', drawPreviewLine);
+  },
+
   onClick: ({ mousePosition: { x, y } }) => {
     const startPosition = lineToolStore.data.startPosition;
     if (!startPosition) {
@@ -42,34 +47,22 @@ export const LineTool: GenericTool<LineToolData, typeof lineToolStore> = {
 };
 
 const drawPreviewLine = (event: MouseEvent) => {
-  if (!lineToolStore.data.startPosition) return;
-  const canvas = canvasStore.previewCanvas;
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
+  const draw = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
+    if (!lineToolStore.data.startPosition) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
 
-  const rect = canvas.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
-
-  ctx.save();
-
-  ctx.strokeStyle = lineToolStore.data.color;
-  ctx.globalAlpha = 0.2;
-  ctx.lineWidth = lineToolStore.data.strokeWidth;
-  ctx.clearRect(
-    0,
-    0,
-    canvasStore.canvasSize.width,
-    canvasStore.canvasSize.height,
-  );
-  ctx.beginPath();
-  ctx.moveTo(
-    lineToolStore.data.startPosition.x,
-    lineToolStore.data.startPosition.y,
-  );
-  ctx.lineTo(x, y);
-  ctx.stroke();
-
-  ctx.restore();
+    ctx.strokeStyle = lineToolStore.data.color;
+    ctx.globalAlpha = 0.2;
+    ctx.lineWidth = lineToolStore.data.strokeWidth;
+    ctx.beginPath();
+    ctx.moveTo(
+      lineToolStore.data.startPosition.x,
+      lineToolStore.data.startPosition.y,
+    );
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  };
+  canvasStore.drawPreviewCanvas(draw);
 };

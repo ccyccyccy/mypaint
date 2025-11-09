@@ -6,6 +6,7 @@ export type GenericTool<LayerData, Store> = {
   store: Store;
   DetailUI: ElementType;
   onClick: (clickData: ClickData) => void;
+  onSwitchToOtherTool?: () => void;
   operation: (data: { ctx: CanvasRenderingContext2D } & LayerData) => void;
 };
 

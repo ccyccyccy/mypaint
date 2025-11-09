@@ -37,6 +37,16 @@ export class CanvasStore {
         });
       },
     );
+
+    reaction(
+      () => this.selectedTool,
+      (_, prev) => {
+        prev?.onSwitchToOtherTool?.();
+        this.previewCanvas
+          ?.getContext('2d')
+          ?.clearRect(0, 0, this.canvasSize.width, this.canvasSize.height);
+      },
+    );
   }
 
   addLayer(data: Tool['store']['data']) {
@@ -70,12 +80,17 @@ export class CanvasStore {
     });
   }
 
-  drawPreviewCanvas(draw: () => void) {
-    const ctx = this.previewCanvas?.getContext('2d');
+  drawPreviewCanvas(
+    draw: (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => void,
+  ) {
+    const canvas = this.previewCanvas;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    // ctx.clearRect(0, 0, this.canvasSize.width, this.canvasSize.height);
+
+    ctx.clearRect(0, 0, this.canvasSize.width, this.canvasSize.height);
     ctx.save();
-    draw();
+    draw(canvas, ctx);
     ctx.restore();
   }
 
