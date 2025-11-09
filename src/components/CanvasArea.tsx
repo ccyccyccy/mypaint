@@ -5,6 +5,7 @@ import { canvasStore } from '../store';
 
 export const CanvasArea = observer(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const previewCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const onResize = () =>
@@ -13,6 +14,7 @@ export const CanvasArea = observer(() => {
         window.innerHeight - TOOLBAR_HEIGHT,
       );
     canvasStore.canvas = canvasRef.current;
+    canvasStore.previewCanvas = previewCanvasRef.current;
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
@@ -31,31 +33,41 @@ export const CanvasArea = observer(() => {
   }, []);
 
   return (
-    <canvas
-      key="canvas"
-      ref={canvasRef}
-      width={window.innerWidth}
-      height={window.innerHeight - TOOLBAR_HEIGHT}
-      onClick={(e) => {
-        e.preventDefault();
-        if (!canvasStore.selectedTool) return;
+    <>
+      <canvas
+        key="overlay"
+        className="absolute z-20 pointer-events-none"
+        ref={previewCanvasRef}
+        width={window.innerWidth}
+        height={window.innerHeight - TOOLBAR_HEIGHT}
+      />
+      <canvas
+        key="canvas"
+        className="absolute z-10"
+        ref={canvasRef}
+        width={window.innerWidth}
+        height={window.innerHeight - TOOLBAR_HEIGHT}
+        onClick={(e) => {
+          e.preventDefault();
+          if (!canvasStore.selectedTool) return;
 
-        const canvas = canvasRef.current;
-        if (!canvas) return;
+          const canvas = canvasRef.current;
+          if (!canvas) return;
 
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return;
 
-        const rect = canvas.getBoundingClientRect();
+          const rect = canvas.getBoundingClientRect();
 
-        canvasStore.selectedTool.onClick({
-          ctx,
-          mousePosition: {
-            x: e.clientX - rect.x,
-            y: e.clientY - rect.y,
-          },
-        });
-      }}
-    />
+          canvasStore.selectedTool.onClick({
+            ctx,
+            mousePosition: {
+              x: e.clientX - rect.x,
+              y: e.clientY - rect.y,
+            },
+          });
+        }}
+      />
+    </>
   );
 });

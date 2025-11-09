@@ -1,7 +1,8 @@
+import { observer } from 'mobx-react-lite';
 import { SUPPORTED_COLORS } from '../../../const';
 import { fillToolStore } from './store';
 
-export const DetailUI = () => {
+export const DetailUI = observer(() => {
   return (
     <div>
       <div>Fill Tool</div>
@@ -12,7 +13,7 @@ export const DetailUI = () => {
             {SUPPORTED_COLORS.map((color) => (
               <div
                 key={color}
-                className={`h-6 w-6${fillToolStore.data.color === color ? ' border-2 border-black' : ''}`}
+                className={`cursor-pointer h-6 w-6${fillToolStore.data.color === color ? ' border-2 border-black' : ''}`}
                 style={{ backgroundColor: color }}
                 onClick={() => {
                   fillToolStore.data.color = color;
@@ -24,4 +25,4 @@ export const DetailUI = () => {
       </div>
     </div>
   );
-};
+});

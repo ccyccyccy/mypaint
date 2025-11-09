@@ -13,7 +13,7 @@ export const DetailUI = observer(() => {
             {SUPPORTED_COLORS.map((color) => (
               <div
                 key={color}
-                className={`h-6 w-6${lineToolStore.data.color === color ? ' border-2 border-black' : ''}`}
+                className={`cursor-pointer h-6 w-6${lineToolStore.data.color === color ? ' border-2 border-black' : ''}`}
                 style={{ backgroundColor: color }}
                 onClick={() => {
                   lineToolStore.data.color = color;
@@ -29,7 +29,7 @@ export const DetailUI = observer(() => {
               return (
                 <div
                   key={strokeWidth}
-                  className={`h-6 w-6 flex justify-center items-center${lineToolStore.data.strokeWidth === strokeWidth ? ' border-2 border-black' : ''}`}
+                  className={`cursor-pointer h-6 w-6 flex justify-center items-center${lineToolStore.data.strokeWidth === strokeWidth ? ' border-2 border-black' : ''}`}
                   onClick={() => {
                     lineToolStore.data.strokeWidth = strokeWidth;
                   }}

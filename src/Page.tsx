@@ -11,7 +11,7 @@ export const Page = observer(() => {
   return (
     <div className="h-screen max-h-screen">
       <div
-        className="w-full p-1 bg-white border-b-2"
+        className="w-full p-1 bg-white border-b-2 rounded"
         style={{ height: TOOLBAR_HEIGHT }}
       >
         <ToolSelector />
@@ -21,11 +21,11 @@ export const Page = observer(() => {
           <CanvasArea />
         </div>
         {selectedTool && (
-          <div className="z-10 absolute top-2 left-2 border-2 border-black p-2 bg-slate-200">
+          <div className="z-10 absolute top-2 left-2 border-2 border-gray-500 p-2 bg-slate-200">
             {<selectedTool.DetailUI />}
           </div>
         )}
-        <div className="z-10 absolute top-2 right-2 border-2 border-black p-2 bg-slate-200">
+        <div className="z-10 absolute top-2 right-2 border-2 border-gray-500 p-2 bg-slate-200 rounded">
           <Layer />
         </div>
       </div>

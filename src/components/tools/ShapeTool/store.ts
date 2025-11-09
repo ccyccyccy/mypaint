@@ -6,7 +6,7 @@ class ShapeToolStore {
   data: ShapeToolData = {
     position: { x: 0, y: 0 },
     shape: 'square',
-    length: 20,
+    size: 20,
     color: '#000000',
   };
 
@@ -17,7 +17,7 @@ class ShapeToolStore {
 
 export type ShapeToolData = {
   shape: keyof typeof Shape;
-  length: number;
+  size: number;
   color: string;
   position: { x: number; y: number };
 };
@@ -32,3 +32,4 @@ export const Shape = {
 } as const;
 
 export const shapeToolStore = new ShapeToolStore();
+export const shapeSizes = [20, 30, 40, 60, 80, 100, 120, 140] as const;

@@ -1,12 +1,12 @@
 import type { ElementType } from 'react';
 
-export type GenericTool<DataT, StoreT> = {
+export type GenericTool<LayerData, Store> = {
   id: string;
   icon: ElementType;
-  store: StoreT;
+  store: Store;
   DetailUI: ElementType;
   onClick: (clickData: ClickData) => void;
-  operation: (data: { ctx: CanvasRenderingContext2D } & DataT) => void;
+  operation: (data: { ctx: CanvasRenderingContext2D } & LayerData) => void;
 };
 
 export type ClickData = {

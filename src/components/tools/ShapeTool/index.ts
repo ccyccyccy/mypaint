@@ -10,9 +10,9 @@ export const ShapeTool: GenericTool<ShapeToolData, typeof shapeToolStore> = {
   store: shapeToolStore,
   DetailUI: DetailUI,
   onClick: ({ mousePosition: { x, y } }) => {
-    canvasStore.addLayers({ ...shapeToolStore.data, position: { x, y } });
+    canvasStore.addLayer({ ...shapeToolStore.data, position: { x, y } });
   },
-  operation: ({ ctx, position: { x, y }, color, length, shape }) => {
+  operation: ({ ctx, position: { x, y }, color, size: length, shape }) => {
     ctx.fillStyle = color;
     switch (shape) {
       case 'square':

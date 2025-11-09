@@ -1,15 +1,14 @@
 import { toolList } from './tools';
 import { canvasStore } from '../store';
+import { observer } from 'mobx-react-lite';
 
-export const ToolSelector = () => {
+export const ToolSelector = observer(() => {
   return (
     <div className="flex flex-row gap-2">
       {toolList.map((tool) => (
         <div
           key={tool.id}
-          className={
-            canvasStore.selectedTool?.id === tool.id ? 'bg-slate-400' : ''
-          }
+          className={`cursor-pointer ${canvasStore.selectedTool?.id === tool.id ? 'bg-slate-400' : ''}`}
           onClick={() => {
             canvasStore.selectTool(tool);
           }}
@@ -19,4 +18,4 @@ export const ToolSelector = () => {
       ))}
     </div>
   );
-};
+});

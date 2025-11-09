@@ -16,6 +16,7 @@ export class CanvasStore {
     height: window.innerHeight - TOOLBAR_HEIGHT,
   };
   canvas: HTMLCanvasElement | null = null;
+  previewCanvas: HTMLCanvasElement | null = null;
   redoStack: LayerData[] = [];
 
   constructor() {
@@ -38,7 +39,7 @@ export class CanvasStore {
     );
   }
 
-  addLayers(data: Tool['store']['data']) {
+  addLayer(data: Tool['store']['data']) {
     if (!this.selectedTool) return;
 
     this.layers.push({
@@ -62,9 +63,20 @@ export class CanvasStore {
     const ctx = this.canvas?.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, this.canvasSize.width, this.canvasSize.height);
-    this.layers.forEach((layer) =>
-      toolFromId[layer.toolId].operation({ ctx, ...layer.data }),
-    );
+    this.layers.forEach((layer) => {
+      ctx.save();
+      toolFromId[layer.toolId].operation({ ctx, ...layer.data });
+      ctx.restore();
+    });
+  }
+
+  drawPreviewCanvas(draw: () => void) {
+    const ctx = this.previewCanvas?.getContext('2d');
+    if (!ctx) return;
+    // ctx.clearRect(0, 0, this.canvasSize.width, this.canvasSize.height);
+    ctx.save();
+    draw();
+    ctx.restore();
   }
 
   // UNDO REDO ONLY WORKS IF LAYER ORDER IS NOT CHANGED, IS ADDED IN ORDER, AND LAYERS ARE NOT DELETED
